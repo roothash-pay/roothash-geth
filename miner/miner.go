@@ -232,7 +232,6 @@ func (miner *Miner) getPending() *newPayloadResult {
 		coinbase:    miner.config.PendingFeeRecipient,
 		random:      common.Hash{},
 		withdrawals: withdrawal,
-		beaconRoot:  nil,
 		noTxs:       false,
 	}, false) // we will never make a witness for a pending block
 	if ret.err != nil {

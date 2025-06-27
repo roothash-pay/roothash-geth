@@ -45,7 +45,6 @@ type BuildPayloadArgs struct {
 	FeeRecipient common.Address        // The provided recipient address for collecting transaction fee
 	Random       common.Hash           // The provided randomness value
 	Withdrawals  types.Withdrawals     // The provided withdrawals
-	BeaconRoot   *common.Hash          // The provided beaconRoot (Cancun)
 	Version      engine.PayloadVersion // Versioning byte for payload id calculation.
 
 	NoTxPool      bool                 // Optimism addition: option to disable tx pool contents from being included
@@ -62,9 +61,6 @@ func (args *BuildPayloadArgs) Id() engine.PayloadID {
 	hasher.Write(args.Random[:])
 	hasher.Write(args.FeeRecipient[:])
 	rlp.Encode(hasher, args.Withdrawals)
-	if args.BeaconRoot != nil {
-		hasher.Write(args.BeaconRoot[:])
-	}
 
 	if args.NoTxPool || len(args.Transactions) > 0 { // extend if extra payload attributes are used
 		binary.Write(hasher, binary.BigEndian, args.NoTxPool)
@@ -304,7 +300,6 @@ func (miner *Miner) buildPayload(args *BuildPayloadArgs, witness bool) (*Payload
 			coinbase:      args.FeeRecipient,
 			random:        args.Random,
 			withdrawals:   args.Withdrawals,
-			beaconRoot:    args.BeaconRoot,
 			noTxs:         true,
 			txs:           args.Transactions,
 			gasLimit:      args.GasLimit,
@@ -333,7 +328,6 @@ func (miner *Miner) buildPayload(args *BuildPayloadArgs, witness bool) (*Payload
 		coinbase:      args.FeeRecipient,
 		random:        args.Random,
 		withdrawals:   args.Withdrawals,
-		beaconRoot:    args.BeaconRoot,
 		noTxs:         false,
 		txs:           args.Transactions,
 		gasLimit:      args.GasLimit,

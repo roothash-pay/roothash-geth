@@ -231,7 +231,6 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 
 	var (
 		blobHashes []common.Hash
-		beaconRoot *common.Hash
 		requests   [][]byte
 	)
 	// Compute post-shanghai fields
@@ -249,12 +248,11 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 				blobHashes = append(blobHashes, kzg4844.CalcBlobHashV1(hasher, &c))
 			}
 		}
-		beaconRoot = &common.Hash{}
 		requests = envelope.Requests
 	}
 
 	// Mark the payload as canon
-	_, err = c.engineAPI.newPayload(*payload, blobHashes, beaconRoot, requests, false)
+	_, err = c.engineAPI.newPayload(*payload, blobHashes, requests, false)
 	if err != nil {
 		return err
 	}
