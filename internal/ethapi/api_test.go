@@ -37,7 +37,6 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/internal/ethapi/override"
 
-	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts"
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/ethereum/go-ethereum/common"
@@ -610,7 +609,7 @@ func newTestBackend(t *testing.T, n int, gspec *core.Genesis, engine consensus.E
 		}
 	)
 	accman, acc := newTestAccountManager(t)
-	gspec.Alloc[acc.Address] = types.Account{Balance: big.NewInt(params.Ether)}
+	gspec.Alloc[acc.Address] = types.Account{Balance: big.NewInt(params.Cp)}
 	// Generate blocks for testing
 	db, blocks, _ := core.GenerateChainWithGenesis(gspec, engine, n, generator)
 	txlookupLimit := uint64(0)
@@ -810,9 +809,9 @@ func TestEstimateGas(t *testing.T) {
 		genesis  = &core.Genesis{
 			Config: params.MergedTestChainConfig,
 			Alloc: types.GenesisAlloc{
-				accounts[0].addr: {Balance: big.NewInt(params.Ether)},
-				accounts[1].addr: {Balance: big.NewInt(params.Ether)},
-				accounts[2].addr: {Balance: big.NewInt(params.Ether), Code: append(types.DelegationPrefix, accounts[3].addr.Bytes()...)},
+				accounts[0].addr: {Balance: big.NewInt(params.Cp)},
+				accounts[1].addr: {Balance: big.NewInt(params.Cp)},
+				accounts[2].addr: {Balance: big.NewInt(params.Cp), Code: append(types.DelegationPrefix, accounts[3].addr.Bytes()...)},
 			},
 		}
 		genBlocks      = 10
@@ -885,7 +884,7 @@ func TestEstimateGas(t *testing.T) {
 			blockNumber: rpc.LatestBlockNumber,
 			call:        TransactionArgs{},
 			overrides: override.StateOverride{
-				randomAccounts[0].addr: override.OverrideAccount{Balance: newRPCBalance(new(big.Int).Mul(big.NewInt(1), big.NewInt(params.Ether)))},
+				randomAccounts[0].addr: override.OverrideAccount{Balance: newRPCBalance(new(big.Int).Mul(big.NewInt(1), big.NewInt(params.Cp)))},
 			},
 			expectErr: nil,
 			want:      53000,
@@ -1101,11 +1100,11 @@ func TestCall(t *testing.T) {
 		genesis  = &core.Genesis{
 			Config: params.MergedTestChainConfig,
 			Alloc: types.GenesisAlloc{
-				accounts[0].addr: {Balance: big.NewInt(params.Ether)},
-				accounts[1].addr: {Balance: big.NewInt(params.Ether)},
-				accounts[2].addr: {Balance: big.NewInt(params.Ether)},
+				accounts[0].addr: {Balance: big.NewInt(params.Cp)},
+				accounts[1].addr: {Balance: big.NewInt(params.Cp)},
+				accounts[2].addr: {Balance: big.NewInt(params.Cp)},
 				dad: {
-					Balance: big.NewInt(params.Ether),
+					Balance: big.NewInt(params.Cp),
 					Nonce:   1,
 					Storage: map[common.Hash]common.Hash{
 						common.Hash{}: common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000001"),
@@ -1191,7 +1190,7 @@ func TestCall(t *testing.T) {
 				Value: (*hexutil.Big)(big.NewInt(1000)),
 			},
 			overrides: override.StateOverride{
-				randomAccounts[0].addr: override.OverrideAccount{Balance: newRPCBalance(new(big.Int).Mul(big.NewInt(1), big.NewInt(params.Ether)))},
+				randomAccounts[0].addr: override.OverrideAccount{Balance: newRPCBalance(new(big.Int).Mul(big.NewInt(1), big.NewInt(params.Cp)))},
 			},
 			want: "0x",
 		},
@@ -1425,9 +1424,9 @@ func TestSimulateV1(t *testing.T) {
 		genesis      = &core.Genesis{
 			Config: params.TestChainConfig,
 			Alloc: types.GenesisAlloc{
-				accounts[0].addr: {Balance: big.NewInt(params.Ether)},
-				accounts[1].addr: {Balance: big.NewInt(params.Ether)},
-				accounts[2].addr: {Balance: big.NewInt(params.Ether)},
+				accounts[0].addr: {Balance: big.NewInt(params.Cp)},
+				accounts[1].addr: {Balance: big.NewInt(params.Cp)},
+				accounts[2].addr: {Balance: big.NewInt(params.Cp)},
 				// Yul:
 				// object "Test" {
 				//     code {
@@ -1435,7 +1434,7 @@ func TestSimulateV1(t *testing.T) {
 				//         selfdestruct(dad)
 				//     }
 				// }
-				cac: {Balance: big.NewInt(params.Ether), Code: common.Hex2Bytes("610dad80ff")},
+				cac: {Balance: big.NewInt(params.Cp), Code: common.Hex2Bytes("610dad80ff")},
 				bab: {
 					Balance: big.NewInt(1),
 					// object "Test" {
@@ -2568,7 +2567,7 @@ func TestSimulateV1ChainLinkage(t *testing.T) {
 		gspec        = &core.Genesis{
 			Config: params.MergedTestChainConfig,
 			Alloc: types.GenesisAlloc{
-				sender:       {Balance: big.NewInt(params.Ether)},
+				sender:       {Balance: big.NewInt(params.Cp)},
 				contractAddr: {Code: common.Hex2Bytes("5f35405f8114600f575f5260205ff35b5f80fd")},
 			},
 		}
@@ -2663,9 +2662,9 @@ func TestSimulateV1TxSender(t *testing.T) {
 		gspec     = &core.Genesis{
 			Config: params.MergedTestChainConfig,
 			Alloc: types.GenesisAlloc{
-				sender:  {Balance: big.NewInt(params.Ether)},
-				sender2: {Balance: big.NewInt(params.Ether)},
-				sender3: {Balance: big.NewInt(params.Ether)},
+				sender:  {Balance: big.NewInt(params.Cp)},
+				sender2: {Balance: big.NewInt(params.Cp)},
+				sender3: {Balance: big.NewInt(params.Cp)},
 			},
 		}
 		ctx = context.Background()
@@ -3322,8 +3321,8 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 		genesis    = &core.Genesis{
 			Config: params.TestChainConfig,
 			Alloc: types.GenesisAlloc{
-				acc1Addr: {Balance: big.NewInt(params.Ether)},
-				acc2Addr: {Balance: big.NewInt(params.Ether)},
+				acc1Addr: {Balance: big.NewInt(params.Cp)},
+				acc2Addr: {Balance: big.NewInt(params.Cp)},
 			},
 		}
 		genBlocks = 10
@@ -3577,8 +3576,8 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 			ExcessBlobGas: new(uint64),
 			BlobGasUsed:   new(uint64),
 			Alloc: types.GenesisAlloc{
-				acc1Addr: {Balance: big.NewInt(params.Ether)},
-				acc2Addr: {Balance: big.NewInt(params.Ether)},
+				acc1Addr: {Balance: big.NewInt(params.Cp)},
+				acc2Addr: {Balance: big.NewInt(params.Cp)},
 				// // SPDX-License-Identifier: GPL-3.0
 				// pragma solidity >=0.7.0 <0.9.0;
 				//
@@ -3589,7 +3588,7 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 				//         return true;
 				//     }
 				// }
-				contract: {Balance: big.NewInt(params.Ether), Code: common.FromHex("0x608060405234801561001057600080fd5b506004361061002b5760003560e01c8063a9059cbb14610030575b600080fd5b61004a6004803603810190610045919061016a565b610060565b60405161005791906101c5565b60405180910390f35b60008273ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef846040516100bf91906101ef565b60405180910390a36001905092915050565b600080fd5b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000610101826100d6565b9050919050565b610111816100f6565b811461011c57600080fd5b50565b60008135905061012e81610108565b92915050565b6000819050919050565b61014781610134565b811461015257600080fd5b50565b6000813590506101648161013e565b92915050565b60008060408385031215610181576101806100d1565b5b600061018f8582860161011f565b92505060206101a085828601610155565b9150509250929050565b60008115159050919050565b6101bf816101aa565b82525050565b60006020820190506101da60008301846101b6565b92915050565b6101e981610134565b82525050565b600060208201905061020460008301846101e0565b9291505056fea2646970667358221220b469033f4b77b9565ee84e0a2f04d496b18160d26034d54f9487e57788fd36d564736f6c63430008120033")},
+				contract: {Balance: big.NewInt(params.Cp), Code: common.FromHex("0x608060405234801561001057600080fd5b506004361061002b5760003560e01c8063a9059cbb14610030575b600080fd5b61004a6004803603810190610045919061016a565b610060565b60405161005791906101c5565b60405180910390f35b60008273ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef846040516100bf91906101ef565b60405180910390a36001905092915050565b600080fd5b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000610101826100d6565b9050919050565b610111816100f6565b811461011c57600080fd5b50565b60008135905061012e81610108565b92915050565b6000819050919050565b61014781610134565b811461015257600080fd5b50565b6000813590506101648161013e565b92915050565b60008060408385031215610181576101806100d1565b5b600061018f8582860161011f565b92505060206101a085828601610155565b9150509250929050565b60008115159050919050565b6101bf816101aa565b82525050565b60006020820190506101da60008301846101b6565b92915050565b6101e981610134565b82525050565b600060208201905061020460008301846101e0565b9291505056fea2646970667358221220b469033f4b77b9565ee84e0a2f04d496b18160d26034d54f9487e57788fd36d564736f6c63430008120033")},
 			},
 		}
 		signer   = types.LatestSignerForChainID(params.TestChainConfig.ChainID)

@@ -98,7 +98,7 @@ func TestSupplyGenesisAlloc(t *testing.T) {
 		key2, _ = crypto.HexToECDSA("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
 		addr2   = crypto.PubkeyToAddress(key2.PublicKey)
-		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Cp))
 
 		config = *params.AllEthashProtocolChanges
 
@@ -113,7 +113,7 @@ func TestSupplyGenesisAlloc(t *testing.T) {
 
 	expected := supplyInfo{
 		Issuance: &supplyInfoIssuance{
-			GenesisAlloc: (*hexutil.Big)(new(big.Int).Mul(common.Big2, big.NewInt(params.Ether))),
+			GenesisAlloc: (*hexutil.Big)(new(big.Int).Mul(common.Big2, big.NewInt(params.Cp))),
 		},
 		Number:     0,
 		Hash:       common.HexToHash("0xbcc9466e9fc6a8b56f4b29ca353a421ff8b51a0c1a58ca4743b427605b08f2ca"),
@@ -141,7 +141,7 @@ func TestSupplyRewards(t *testing.T) {
 
 	expected := supplyInfo{
 		Issuance: &supplyInfoIssuance{
-			Reward: (*hexutil.Big)(new(big.Int).Mul(common.Big2, big.NewInt(params.Ether))),
+			Reward: (*hexutil.Big)(new(big.Int).Mul(common.Big2, big.NewInt(params.Cp))),
 		},
 		Number:     1,
 		Hash:       common.HexToHash("0xcbb08370505be503dafedc4e96d139ea27aba3cbc580148568b8a307b3f51052"),
@@ -166,8 +166,8 @@ func TestSupplyEip1559Burn(t *testing.T) {
 		// A sender who makes transactions, has some eth1
 		key1, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
-		gwei5   = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.GWei))
-		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		gwei5   = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.CpGWei))
+		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Cp))
 
 		gspec = &core.Genesis{
 			Config:  &config,
@@ -201,7 +201,7 @@ func TestSupplyEip1559Burn(t *testing.T) {
 	}
 	var (
 		head     = chain.CurrentBlock()
-		reward   = new(big.Int).Mul(common.Big2, big.NewInt(params.Ether))
+		reward   = new(big.Int).Mul(common.Big2, big.NewInt(params.Cp))
 		burn     = new(big.Int).Mul(big.NewInt(21000), head.BaseFee)
 		expected = supplyInfo{
 			Issuance: &supplyInfoIssuance{
@@ -273,8 +273,8 @@ func TestSupplySelfdestruct(t *testing.T) {
 		dad     = common.HexToAddress("0x0000000000000000000000000000000000000dad")
 		key1, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
-		gwei5   = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.GWei))
-		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		gwei5   = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.CpGWei))
+		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Cp))
 
 		gspec = &core.Genesis{
 			Config:  &config,
@@ -413,10 +413,10 @@ func TestSupplySelfdestructItselfAndRevert(t *testing.T) {
 		dd      = common.HexToAddress("0x4444444444444444444444444444444444444444")
 		key1, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
-		gwei5   = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.GWei))
-		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
-		eth2    = new(big.Int).Mul(common.Big2, big.NewInt(params.Ether))
-		eth5    = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.Ether))
+		gwei5   = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.CpGWei))
+		eth1    = new(big.Int).Mul(common.Big1, big.NewInt(params.Cp))
+		eth2    = new(big.Int).Mul(common.Big2, big.NewInt(params.Cp))
+		eth5    = new(big.Int).Mul(big.NewInt(5), big.NewInt(params.Cp))
 
 		gspec = &core.Genesis{
 			Config: &config,

@@ -184,7 +184,7 @@ func createTestLegacyTxInner() *LegacyTx {
 		To:       nil,
 		Value:    big.NewInt(0),
 		Gas:      params.TxGas,
-		GasPrice: big.NewInt(params.GWei),
+		GasPrice: big.NewInt(params.CpGWei),
 		Data:     nil,
 	}
 }

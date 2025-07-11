@@ -195,8 +195,8 @@ func newTestBackend(t *testing.T, londonBlock *big.Int, cancunBlock *big.Int, pe
 				Nonce:     b.TxNonce(addr),
 				To:        &common.Address{},
 				Gas:       30000,
-				GasFeeCap: big.NewInt(100 * params.GWei),
-				GasTipCap: big.NewInt(int64(i+1) * params.GWei),
+				GasFeeCap: big.NewInt(100 * params.CpGWei),
+				GasTipCap: big.NewInt(int64(i+1) * params.CpGWei),
 				Data:      []byte{},
 			}
 		} else {
@@ -204,7 +204,7 @@ func newTestBackend(t *testing.T, londonBlock *big.Int, cancunBlock *big.Int, pe
 				Nonce:    b.TxNonce(addr),
 				To:       &common.Address{},
 				Gas:      21000,
-				GasPrice: big.NewInt(int64(i+1) * params.GWei),
+				GasPrice: big.NewInt(int64(i+1) * params.CpGWei),
 				Value:    big.NewInt(100),
 				Data:     []byte{},
 			}
@@ -227,8 +227,8 @@ func newTestBackend(t *testing.T, londonBlock *big.Int, cancunBlock *big.Int, pe
 					Nonce:      b.TxNonce(addr),
 					To:         common.Address{},
 					Gas:        30000,
-					GasFeeCap:  uint256.NewInt(100 * params.GWei),
-					GasTipCap:  uint256.NewInt(uint64(i+1) * params.GWei),
+					GasFeeCap:  uint256.NewInt(100 * params.CpGWei),
+					GasTipCap:  uint256.NewInt(uint64(i+1) * params.CpGWei),
 					Data:       []byte{},
 					BlobFeeCap: uint256.NewInt(1),
 					BlobHashes: []common.Hash{emptyBlobVHash},
@@ -271,15 +271,15 @@ func TestSuggestTipCap(t *testing.T) {
 		fork   *big.Int // London fork number
 		expect *big.Int // Expected gasprice suggestion
 	}{
-		{nil, big.NewInt(params.GWei * int64(30))},
-		{big.NewInt(0), big.NewInt(params.GWei * int64(30))},  // Fork point in genesis
-		{big.NewInt(1), big.NewInt(params.GWei * int64(30))},  // Fork point in first block
-		{big.NewInt(32), big.NewInt(params.GWei * int64(30))}, // Fork point in last block
-		{big.NewInt(33), big.NewInt(params.GWei * int64(30))}, // Fork point in the future
+		{nil, big.NewInt(params.CpGWei * int64(30))},
+		{big.NewInt(0), big.NewInt(params.CpGWei * int64(30))},  // Fork point in genesis
+		{big.NewInt(1), big.NewInt(params.CpGWei * int64(30))},  // Fork point in first block
+		{big.NewInt(32), big.NewInt(params.CpGWei * int64(30))}, // Fork point in last block
+		{big.NewInt(33), big.NewInt(params.CpGWei * int64(30))}, // Fork point in the future
 	}
 	for _, c := range cases {
 		backend := newTestBackend(t, c.fork, nil, false, false)
-		oracle := NewOracle(backend, config, big.NewInt(params.GWei))
+		oracle := NewOracle(backend, config, big.NewInt(params.CpGWei))
 
 		// The gas price sampled is: 32G, 31G, 30G, 29G, 28G, 27G
 		got, err := oracle.SuggestTipCap(context.Background())
