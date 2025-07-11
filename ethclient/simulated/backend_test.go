@@ -61,9 +61,9 @@ func newBlobTx(sim *Backend, key *ecdsa.PrivateKey) (*types.Transaction, error) 
 	testBlobVHash := kzg4844.CalcBlobHashV1(sha256.New(), &testBlobCommit)
 
 	head, _ := client.HeaderByNumber(context.Background(), nil) // Should be child's, good enough
-	gasPrice := new(big.Int).Add(head.BaseFee, big.NewInt(params.GWei))
+	gasPrice := new(big.Int).Add(head.BaseFee, big.NewInt(params.CpGWei))
 	gasPriceU256, _ := uint256.FromBig(gasPrice)
-	gasTipCapU256, _ := uint256.FromBig(big.NewInt(params.GWei))
+	gasTipCapU256, _ := uint256.FromBig(big.NewInt(params.CpGWei))
 
 	addr := crypto.PubkeyToAddress(key.PublicKey)
 	chainid, _ := client.ChainID(context.Background())
@@ -97,7 +97,7 @@ func newTx(sim *Backend, key *ecdsa.PrivateKey) (*types.Transaction, error) {
 
 	// create a signed transaction to send
 	head, _ := client.HeaderByNumber(context.Background(), nil) // Should be child's, good enough
-	gasPrice := new(big.Int).Add(head.BaseFee, big.NewInt(params.GWei))
+	gasPrice := new(big.Int).Add(head.BaseFee, big.NewInt(params.CpGWei))
 	addr := crypto.PubkeyToAddress(key.PublicKey)
 	chainid, _ := client.ChainID(context.Background())
 	nonce, err := client.PendingNonceAt(context.Background(), addr)
@@ -107,7 +107,7 @@ func newTx(sim *Backend, key *ecdsa.PrivateKey) (*types.Transaction, error) {
 	tx := types.NewTx(&types.DynamicFeeTx{
 		ChainID:   chainid,
 		Nonce:     nonce,
-		GasTipCap: big.NewInt(params.GWei),
+		GasTipCap: big.NewInt(params.CpGWei),
 		GasFeeCap: gasPrice,
 		Gas:       21000,
 		To:        &addr,

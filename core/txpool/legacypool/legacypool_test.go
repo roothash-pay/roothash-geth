@@ -319,7 +319,7 @@ func (c *testChain) State() (*state.StateDB, error) {
 		c.statedb, _ = state.New(types.EmptyRootHash, state.NewDatabaseForTesting())
 		// simulate that the new head block included tx0 and tx1
 		c.statedb.SetNonce(c.address, 2, tracing.NonceChangeUnspecified)
-		c.statedb.SetBalance(c.address, new(uint256.Int).SetUint64(params.Ether), tracing.BalanceChangeUnspecified)
+		c.statedb.SetBalance(c.address, new(uint256.Int).SetUint64(params.Cp), tracing.BalanceChangeUnspecified)
 		*c.trigger = false
 	}
 	return stdb, nil
@@ -339,7 +339,7 @@ func TestStateChangeDuringReset(t *testing.T) {
 	)
 
 	// setup pool with 2 transaction in it
-	statedb.SetBalance(address, new(uint256.Int).SetUint64(params.Ether), tracing.BalanceChangeUnspecified)
+	statedb.SetBalance(address, new(uint256.Int).SetUint64(params.Cp), tracing.BalanceChangeUnspecified)
 	blockchain := &testChain{newTestBlockChain(params.TestChainConfig, 1000000000, statedb, new(event.Feed)), address, &trigger}
 
 	tx0 := transaction(0, 100000, key)
@@ -2286,9 +2286,9 @@ func TestSetCodeTransactions(t *testing.T) {
 		addrB   = crypto.PubkeyToAddress(keyB.PublicKey)
 		addrC   = crypto.PubkeyToAddress(keyC.PublicKey)
 	)
-	testAddBalance(pool, addrA, big.NewInt(params.Ether))
-	testAddBalance(pool, addrB, big.NewInt(params.Ether))
-	testAddBalance(pool, addrC, big.NewInt(params.Ether))
+	testAddBalance(pool, addrA, big.NewInt(params.Cp))
+	testAddBalance(pool, addrB, big.NewInt(params.Cp))
+	testAddBalance(pool, addrC, big.NewInt(params.Cp))
 
 	for _, tt := range []struct {
 		name    string
@@ -2531,7 +2531,7 @@ func TestSetCodeTransactions(t *testing.T) {
 					key, _ := crypto.GenerateKey()
 					keys = append(keys, key)
 					addr := crypto.PubkeyToAddress(key.PublicKey)
-					testAddBalance(pool, addr, big.NewInt(params.Ether))
+					testAddBalance(pool, addr, big.NewInt(params.Cp))
 				}
 				// Create a transactions with 3 unique auths so the lookup's auth map is
 				// filled with addresses.
@@ -2580,7 +2580,7 @@ func TestSetCodeTransactionsReorg(t *testing.T) {
 		keyA, _ = crypto.GenerateKey()
 		addrA   = crypto.PubkeyToAddress(keyA.PublicKey)
 	)
-	testAddBalance(pool, addrA, big.NewInt(params.Ether))
+	testAddBalance(pool, addrA, big.NewInt(params.Cp))
 	// Send an authorization for 0x42
 	var authList []types.SetCodeAuthorization
 	auth, _ := types.SignSetCode(keyA, types.SetCodeAuthorization{

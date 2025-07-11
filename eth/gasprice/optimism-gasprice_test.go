@@ -90,7 +90,7 @@ func newOpTestBackend(t *testing.T, txs []testTxData) *opTestBackend {
 			Nonce:     nonce,
 			To:        &common.Address{},
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(100 * params.GWei),
+			GasFeeCap: big.NewInt(100 * params.CpGWei),
 			GasTipCap: big.NewInt(tx.priorityFee),
 			Data:      []byte{},
 		}
@@ -108,35 +108,35 @@ func newOpTestBackend(t *testing.T, txs []testTxData) *opTestBackend {
 }
 
 func TestSuggestOptimismPriorityFee(t *testing.T) {
-	minSuggestion := new(big.Int).SetUint64(1e8 * params.Wei)
+	minSuggestion := new(big.Int).SetUint64(1e8 * params.CpWei)
 	cases := []struct {
 		txdata []testTxData
 		want   *big.Int
 	}{
 		{
 			// block well under capacity, expect min priority fee suggestion
-			txdata: []testTxData{{params.GWei, 21000}},
+			txdata: []testTxData{{params.CpGWei, 21000}},
 			want:   minSuggestion,
 		},
 		{
 			// 2 txs, still under capacity, expect min priority fee suggestion
-			txdata: []testTxData{{params.GWei, 21000}, {params.GWei, 21000}},
+			txdata: []testTxData{{params.CpGWei, 21000}, {params.CpGWei, 21000}},
 			want:   minSuggestion,
 		},
 		{
 			// 2 txs w same priority fee (1 gwei), but second tx puts it right over capacity
-			txdata: []testTxData{{params.GWei, 21000}, {params.GWei, 21001}},
+			txdata: []testTxData{{params.CpGWei, 21000}, {params.CpGWei, 21001}},
 			want:   big.NewInt(1100000000), // 10 percent over 1 gwei, the median
 		},
 		{
 			// 3 txs, full block. return 10% over the median tx (10 gwei * 10% == 11 gwei)
-			txdata: []testTxData{{10 * params.GWei, 21000}, {1 * params.GWei, 21000}, {100 * params.GWei, 21000}},
-			want:   big.NewInt(11 * params.GWei),
+			txdata: []testTxData{{10 * params.CpGWei, 21000}, {1 * params.CpGWei, 21000}, {100 * params.CpGWei, 21000}},
+			want:   big.NewInt(11 * params.CpGWei),
 		},
 	}
 	for i, c := range cases {
 		backend := newOpTestBackend(t, c.txdata)
-		oracle := NewOracle(backend, Config{MinSuggestedPriorityFee: minSuggestion}, big.NewInt(params.GWei))
+		oracle := NewOracle(backend, Config{MinSuggestedPriorityFee: minSuggestion}, big.NewInt(params.CpGWei))
 		got := oracle.SuggestOptimismPriorityFee(context.Background(), backend.block.Header(), backend.block.Hash())
 		if got.Cmp(c.want) != 0 {
 			t.Errorf("Gas price mismatch for test case %d: want %d, got %d", i, c.want, got)
