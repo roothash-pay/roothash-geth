@@ -75,7 +75,8 @@ type TxPool struct {
 	quit chan chan error         // Quit channel to tear down the head updater
 	term chan struct{}           // Termination channel to detect a closed pool
 
-	sync chan chan error // Testing / simulator channel to block until internal reset is done
+	sync   chan chan error // Testing / simulator channel to block until internal reset is done
+	GasTip uint64
 }
 
 // New creates a new transaction pool to gather, sort and filter inbound
@@ -104,6 +105,7 @@ func New(gasTip uint64, chain BlockChain, subpools []SubPool, ingressFilters []I
 		quit:     make(chan chan error),
 		term:     make(chan struct{}),
 		sync:     make(chan chan error),
+		GasTip:   gasTip,
 	}
 	reserver := NewReservationTracker()
 	for i, subpool := range subpools {

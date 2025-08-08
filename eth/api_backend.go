@@ -509,3 +509,7 @@ func (b *EthAPIBackend) HistoricalRPCService() *rpc.Client {
 func (b *EthAPIBackend) Genesis() *types.Block {
 	return b.eth.blockchain.Genesis()
 }
+
+func (b *EthAPIBackend) TxPoolPriceLimit() uint64 {
+	return b.eth.txPool.GasTip
+}

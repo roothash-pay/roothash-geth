@@ -76,6 +76,13 @@ func (api *EthereumAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
 	if head := api.b.CurrentHeader(); head.BaseFee != nil {
 		tipcap.Add(tipcap, head.BaseFee)
 	}
+
+	// Check if the calculated gas price is below the txpool price limit
+	priceLimit := big.NewInt(int64(api.b.TxPoolPriceLimit()))
+	if tipcap.Cmp(priceLimit) < 0 {
+		return (*hexutil.Big)(priceLimit), nil
+	}
+
 	return (*hexutil.Big)(tipcap), err
 }
 
@@ -85,6 +92,13 @@ func (api *EthereumAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big,
 	if err != nil {
 		return nil, err
 	}
+
+	// Check if the calculated tip cap is below the txpool price limit
+	priceLimit := big.NewInt(int64(api.b.TxPoolPriceLimit()))
+	if tipcap.Cmp(priceLimit) < 0 {
+		return (*hexutil.Big)(priceLimit), nil
+	}
+
 	return (*hexutil.Big)(tipcap), err
 }
 
