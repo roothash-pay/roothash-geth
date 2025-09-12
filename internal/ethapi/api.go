@@ -122,10 +122,14 @@ func (api *EthereumAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDec
 		GasUsedRatio: gasUsed,
 	}
 	if reward != nil {
+		priceLimit := big.NewInt(int64(api.b.TxPoolPriceLimit()))
 		results.Reward = make([][]*hexutil.Big, len(reward))
 		for i, w := range reward {
 			results.Reward[i] = make([]*hexutil.Big, len(w))
 			for j, v := range w {
+				if v == nil || v.Cmp(priceLimit) < 0 {
+					v = priceLimit
+				}
 				results.Reward[i][j] = (*hexutil.Big)(v)
 			}
 		}
