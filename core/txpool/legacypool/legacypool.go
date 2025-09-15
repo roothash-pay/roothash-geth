@@ -319,8 +319,11 @@ func (pool *LegacyPool) Init(gasTip uint64, head *types.Header, reserver txpool.
 	// Set the address reserver to request exclusive access to pooled accounts
 	pool.reserver = reserver
 
-	// Set the basic pool parameters
-	pool.gasTip.Store(uint256.NewInt(gasTip))
+	effectiveGasTip := gasTip
+	if pool.config.PriceLimit > gasTip {
+		effectiveGasTip = pool.config.PriceLimit
+	}
+	pool.gasTip.Store(uint256.NewInt(effectiveGasTip))
 
 	// Initialize the state with head block, or fallback to empty one in
 	// case the head state is not available (might occur when node is not
