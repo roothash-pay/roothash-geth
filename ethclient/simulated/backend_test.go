@@ -61,9 +61,9 @@ func newBlobTx(sim *Backend, key *ecdsa.PrivateKey) (*types.Transaction, error) 
 	testBlobVHash := kzg4844.CalcBlobHashV1(sha256.New(), &testBlobCommit)
 
 	head, _ := client.HeaderByNumber(context.Background(), nil) // Should be child's, good enough
-	gasPrice := new(big.Int).Add(head.BaseFee, big.NewInt(params.CpGWei))
+	gasPrice := new(big.Int).Add(head.BaseFee, big.NewInt(params.TwGWei))
 	gasPriceU256, _ := uint256.FromBig(gasPrice)
-	gasTipCapU256, _ := uint256.FromBig(big.NewInt(params.CpGWei))
+	gasTipCapU256, _ := uint256.FromBig(big.NewInt(params.TwGWei))
 
 	addr := crypto.PubkeyToAddress(key.PublicKey)
 	chainid, _ := client.ChainID(context.Background())

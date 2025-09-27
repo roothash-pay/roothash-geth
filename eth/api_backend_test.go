@@ -84,7 +84,7 @@ func initBackend(withLocal bool) *EthAPIBackend {
 
 func makeTx(nonce uint64, gasPrice *big.Int, amount *big.Int, key *ecdsa.PrivateKey) *types.Transaction {
 	if gasPrice == nil {
-		gasPrice = big.NewInt(params.CpGWei)
+		gasPrice = big.NewInt(params.TwGWei)
 	}
 	if amount == nil {
 		amount = big.NewInt(1000)
@@ -134,7 +134,7 @@ func TestSendTx(t *testing.T) {
 func testSendTx(t *testing.T, withLocal bool) {
 	b := initBackend(withLocal)
 
-	txA := pricedSetCodeTx(0, 250000, uint256.NewInt(params.CpGWei), uint256.NewInt(params.CpGWei), key, []unsignedAuth{
+	txA := pricedSetCodeTx(0, 250000, uint256.NewInt(params.TwGWei), uint256.NewInt(params.CpGWei), key, []unsignedAuth{
 		{
 			nonce: 0,
 			key:   key,

@@ -19,6 +19,7 @@ package bind_test
 import (
 	"context"
 	"errors"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind/v2"
 	"math/big"
 	"testing"
 	"time"
@@ -61,7 +62,7 @@ func TestWaitDeployed(t *testing.T) {
 
 		// Create the transaction
 		head, _ := backend.Client().HeaderByNumber(context.Background(), nil) // Should be child's, good enough
-		gasPrice := new(big.Int).Add(head.BaseFee, big.NewInt(params.CpGWei))
+		gasPrice := new(big.Int).Add(head.BaseFee, big.NewInt(params.TwGWei))
 
 		tx := types.NewContractCreation(0, big.NewInt(0), test.gas, gasPrice, common.FromHex(test.code))
 		tx, _ = types.SignTx(tx, types.LatestSignerForChainID(big.NewInt(1337)), testKey)

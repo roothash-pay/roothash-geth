@@ -36,10 +36,10 @@ import (
 const sampleNumber = 3 // Number of transactions sampled in a block
 
 var (
-	DefaultMaxPrice    = big.NewInt(500 * params.CpGWei)
-	DefaultIgnorePrice = big.NewInt(2 * params.CpWei)
+	DefaultMaxPrice    = big.NewInt(500 * params.TwGWei)
+	DefaultIgnorePrice = big.NewInt(2 * params.TwWei)
 
-	DefaultMinSuggestedPriorityFee = big.NewInt(1e6 * params.CpWei) // 0.001 gwei, for Optimism fee suggestion
+	DefaultMinSuggestedPriorityFee = big.NewInt(1e6 * params.TwWei) // 0.001 gwei, for Optimism fee suggestion
 )
 
 type Config struct {

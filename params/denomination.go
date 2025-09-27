@@ -21,7 +21,7 @@ package params
 //
 //	new(big.Int).Mul(value, big.NewInt(params.CpGWei))
 const (
-	CpWei  = 1
-	CpGWei = 1e9
-	Cp     = 1e18
+	TwWei  = 1
+	TwGWei = 1e9
+	Tw     = 1e18
 )

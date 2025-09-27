@@ -103,7 +103,7 @@ func (env *testEnv) makeTx(nonce uint64, gasPrice *big.Int) *types.Transaction {
 		nonce = state.GetNonce(address)
 	}
 	if gasPrice == nil {
-		gasPrice = big.NewInt(params.CpGWei)
+		gasPrice = big.NewInt(params.TwGWei)
 	}
 	tx, _ := types.SignTx(types.NewTransaction(nonce, common.Address{0x00}, big.NewInt(1000), params.TxGas, gasPrice, nil), signer, key)
 	return tx
@@ -116,7 +116,7 @@ func (env *testEnv) makeTxs(n int) []*types.Transaction {
 
 	var txs []*types.Transaction
 	for i := 0; i < n; i++ {
-		tx, _ := types.SignTx(types.NewTransaction(nonce+uint64(i), common.Address{0x00}, big.NewInt(1000), params.TxGas, big.NewInt(params.CpGWei), nil), signer, key)
+		tx, _ := types.SignTx(types.NewTransaction(nonce+uint64(i), common.Address{0x00}, big.NewInt(1000), params.TxGas, big.NewInt(params.TwGWei), nil), signer, key)
 		txs = append(txs, tx)
 	}
 	return txs

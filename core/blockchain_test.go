@@ -85,7 +85,7 @@ func newCanonical(engine consensus.Engine, n int, full bool, scheme string) (eth
 }
 
 func newGwei(n int64) *big.Int {
-	return new(big.Int).Mul(big.NewInt(n), big.NewInt(params.CpGWei))
+	return new(big.Int).Mul(big.NewInt(n), big.NewInt(params.TwGWei))
 }
 
 // Test fork of length N starting from block i
