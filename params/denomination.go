@@ -19,9 +19,9 @@ package params
 // These are the multipliers for ether denominations.
 // Example: To get the wei value of an amount in 'gwei', use
 //
-//	new(big.Int).Mul(value, big.NewInt(params.CpGWei))
+//	new(big.Int).Mul(value, big.NewInt(params.RhsGWei))
 const (
-	TwWei  = 1
-	TwGWei = 1e9
-	Tw     = 1e18
+	RhsWei  = 1
+	RhsGWei = 1e9
+	Rhs     = 1e18
 )
